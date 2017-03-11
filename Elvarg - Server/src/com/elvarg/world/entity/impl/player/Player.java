@@ -2,6 +2,8 @@
 package com.elvarg.world.entity.impl.player;
 
 import java.util.LinkedList;
+
+
 import java.util.List;
 
 import com.elvarg.GameConstants;
@@ -60,7 +62,6 @@ import com.elvarg.world.model.dialogue.DialogueOptions;
 import com.elvarg.world.model.equipment.BonusManager;
 import com.elvarg.world.model.movement.MovementStatus;
 import com.elvarg.world.model.syntax.EnterSyntax;
-import com.elvarg.world.model.teleportation.operational.OperationHandler;
 
 public class Player extends Character {
 
@@ -475,7 +476,6 @@ public class Player extends Character {
 	/*
 	 * Fields
 	 */
-
 	private DialogueOptions dialogueOptions;
 	private String username;
 	private String password;
@@ -492,7 +492,6 @@ public class Player extends Character {
 	private final FrameUpdater frameUpdater = new FrameUpdater();
 	private final BonusManager bonusManager = new BonusManager();
 	private final HerbSack herbSack = new HerbSack(this);
-	private final OperationHandler operationHandler = new OperationHandler(this);
 	private PlayerSession session;
 	private PlayerInteractingOption playerInteractingOption = PlayerInteractingOption.NONE;
 	private PlayerRights rights = PlayerRights.PLAYER;
@@ -736,10 +735,6 @@ public class Player extends Character {
 		return herbSack;
 	}
 	
-	public OperationHandler getOperationHandler() {
-		return operationHandler;
-	}
-
 	public int getMultiIcon() {
 		return multiIcon;
 	}

@@ -1,10 +1,12 @@
 package com.elvarg.net.packet.impl;
 
 import com.elvarg.cache.impl.definitions.WeaponInterfaces;
+
 import com.elvarg.net.packet.Packet;
 import com.elvarg.net.packet.PacketConstants;
 import com.elvarg.net.packet.PacketListener;
 import com.elvarg.world.content.Trading;
+import com.elvarg.world.content.operable.OperationHandler;
 import com.elvarg.world.entity.combat.CombatSpecial;
 import com.elvarg.world.entity.combat.magic.Autocasting;
 import com.elvarg.world.entity.combat.ranged.RangedData;
@@ -23,7 +25,6 @@ import com.elvarg.world.model.syntax.impl.PriceCheckX;
 import com.elvarg.world.model.syntax.impl.SellX;
 import com.elvarg.world.model.syntax.impl.TradeX;
 import com.elvarg.world.model.syntax.impl.WithdrawBankX;
-import com.elvarg.world.model.teleportation.operational.OperationHandler;
 
 public class ItemContainerActionPacketListener implements PacketListener {
 
@@ -173,7 +174,7 @@ public class ItemContainerActionPacketListener implements PacketListener {
 			break;
 		case 1688:
 			if (OperationHandler.OPERABLE_ITEMS.contains(id)) {
-				player.getOperationHandler().execute(id);
+				OperationHandler.execute(player, id);
 			}
 			break;
 		case PriceChecker.CONTAINER_ID:

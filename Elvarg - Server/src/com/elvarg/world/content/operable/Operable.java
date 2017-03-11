@@ -1,4 +1,4 @@
-package com.elvarg.world.model.teleportation.operational;
+package com.elvarg.world.content.operable;
 
 import com.elvarg.world.entity.impl.player.Player;
 

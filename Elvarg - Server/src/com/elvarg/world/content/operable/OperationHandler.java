@@ -1,4 +1,4 @@
-package com.elvarg.world.model.teleportation.operational;
+package com.elvarg.world.content.operable;
 
 import java.util.Arrays;
 import java.util.Optional;
@@ -15,12 +15,6 @@ import com.google.common.collect.ImmutableSet;
  * @author Andys1814.
  */
 public class OperationHandler {
-
-	private final Player player;
-
-	public OperationHandler(final Player player) {
-		this.player = player;
-	}
 
 	public enum OperableItem implements Operable {
 		AMULET_OF_GLORY(1712, (player) -> player.getPacketSender().sendMessage("Testing item operation")),
@@ -54,10 +48,13 @@ public class OperationHandler {
 	 * operate with. It will then call that enum constant's implementation of
 	 * {@link Operable#operate}.
 	 * 
+	 * @param player
+	 *            The player object uses during the execution of the operable.
+	 * 
 	 * @param id
 	 *            The item id which will be used.
 	 */
-	public void execute(int id) {
+	public static void execute(Player player, int id) {
 		Optional<OperableItem> item = Arrays.stream(OperableItem.values()).filter(field -> field.id == id).findAny();
 		item.ifPresent(i -> i.operate(player));
 	}
