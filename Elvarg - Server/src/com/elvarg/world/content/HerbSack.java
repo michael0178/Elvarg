@@ -49,7 +49,7 @@ public final class HerbSack {
 	}
 
 	/**
-	 * Handles the action of emptying the Herb Sack
+	 * Handles the action of emptying the Herb Sack.
 	 */
 	public void emptySack() {
 		if (herbSack.isEmpty()) {
@@ -66,7 +66,6 @@ public final class HerbSack {
 				return;
 			}
 			int herb = it.next();
-			System.out.println("removing item : " + herb);
 			player.getInventory().add(new Item(herb));
 			it.remove();
 		}
@@ -92,13 +91,13 @@ public final class HerbSack {
 	/**
 	 * This predicate method is used while filling the sack to filter out items
 	 * that are not allowed to be stored in the sack. Basically, anything with
-	 * "Grimy" in the name can be stored in the sack so we generalize it as
-	 * such.
+	 * "Grimy" in the beginning of the name can be stored in the sack so we
+	 * generalize it as such.
 	 * 
 	 * @return The result of the predicate function.
 	 */
 	private final Predicate<Item> isGrimyHerb() {
-		return herb -> herb.getDefinition().getName().contains("Grimy");
+		return herb -> herb.getDefinition().getName().startsWith("Grimy");
 	}
 
 }

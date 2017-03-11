@@ -23,7 +23,7 @@ import com.elvarg.world.model.syntax.impl.PriceCheckX;
 import com.elvarg.world.model.syntax.impl.SellX;
 import com.elvarg.world.model.syntax.impl.TradeX;
 import com.elvarg.world.model.syntax.impl.WithdrawBankX;
-import com.elvarg.world.model.teleportation.operational.OperationsHandler;
+import com.elvarg.world.model.teleportation.operational.OperationHandler;
 
 public class ItemContainerActionPacketListener implements PacketListener {
 
@@ -97,9 +97,8 @@ public class ItemContainerActionPacketListener implements PacketListener {
 			 * if(player.getDueling().selectedDuelRules[DuelRule.LOCK_WEAPON.
 			 * ordinal()]) { if(item.getDefinition().getEquipmentSlot() ==
 			 * Equipment.WEAPON_SLOT || item.getDefinition().isTwoHanded()) {
-			 * player.getPacketSender().
-			 * sendMessage("Weapons have been locked during this duel!");
-			 * return; } } }
+			 * player.getPacketSender(). sendMessage(
+			 * "Weapons have been locked during this duel!"); return; } } }
 			 */
 			boolean stackItem = item.getDefinition().isStackable() && player.getInventory().getAmount(item.getId()) > 0;
 			int inventorySlot = player.getInventory().getEmptySlot();
@@ -172,8 +171,10 @@ public class ItemContainerActionPacketListener implements PacketListener {
 				player.getTrading().handleItem(id, 5, slot, player.getTrading().getContainer(), player.getInventory());
 			}
 			break;
-		case 1688: 
-				OperationsHandler.executeOperation(player, id);
+		case 1688:
+			if (OperationHandler.OPERABLE_ITEMS.contains(id)) {
+				player.getOperationHandler().execute(id);
+			}
 			break;
 		case PriceChecker.CONTAINER_ID:
 			player.getPriceChecker().withdraw(id, 5, slot);
