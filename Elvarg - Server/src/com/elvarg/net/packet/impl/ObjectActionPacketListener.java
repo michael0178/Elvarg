@@ -62,7 +62,6 @@ public class ObjectActionPacketListener implements PacketListener {
 			public void execute() {
 				if (gameObject.getDefinition().getName().contains("Bank"))
 				{
-					System.out.println("zzz");
 					player.getBank(player.getCurrentBankTab()).open();
 				}
 				AreaHandler.firstClickObject(player, id);

@@ -59,8 +59,6 @@ public class OperationHandler {
 	 */
 	public void execute(int id) {
 		Optional<OperableItem> item = Arrays.stream(OperableItem.values()).filter(field -> field.id == id).findAny();
-		if (item.isPresent()) {
-			item.get().operate(player);
-		}
+		item.ifPresent(i -> i.operate(player));
 	}
 }
