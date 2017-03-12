@@ -11,6 +11,7 @@ import com.elvarg.world.entity.combat.magic.CombatSpells;
 import com.elvarg.world.entity.combat.pvp.BountyHunter;
 import com.elvarg.world.entity.impl.npc.NPC;
 import com.elvarg.world.entity.impl.player.Player;
+import com.elvarg.world.index.MobIndex;
 import com.elvarg.world.model.Flag;
 import com.elvarg.world.model.PlayerRights;
 import com.elvarg.world.model.Skill;
@@ -35,28 +36,28 @@ public class NPCOptionPacketListener implements PacketListener {
 			public void execute() {
 				switch (npc.getId()) {
 
-				case SHOP_KEEPER:
+				case MobIndex.SHOP_KEEPER:
 					Shop.open(player, 0);
 					break;
 
-				case JEWELRY_TRADER:
+				case MobIndex.JEWELRY_TRADER:
 					Shop.open(player, 7);
 					break;
 
-				case MAKE_OVER_MAGE:
+				case MobIndex.MAKE_OVER_MAGE:
 					player.getPacketSender().sendInterfaceRemoval().sendInterface(3559);
 					player.getAppearance().setCanChangeAppearance(true);
 					break;
 
-				case SURGEON_GENERAL_TIFANI:
+				case MobIndex.SURGEON_GENERAL_TIFANI:
 					Shop.open(player, 8);
 					break;
 
-				case PKER:
+				case MobIndex.PKER:
 					Shop.open(player, 9);
 					break;
 
-				case WARRIOR:
+				case MobIndex.WARRIOR:
 					player.setDialogueOptions(new DialogueOptions() {
 						@Override
 						public void handleOption1(Player player) {
@@ -76,7 +77,7 @@ public class NPCOptionPacketListener implements PacketListener {
 					DialogueManager.start(player, 8);
 					break;
 
-				case MAGE:
+				case MobIndex.MAGE:
 					player.setDialogueOptions(new DialogueOptions() {
 						@Override
 						public void handleOption1(Player player) {
@@ -96,7 +97,7 @@ public class NPCOptionPacketListener implements PacketListener {
 					DialogueManager.start(player, 6);
 					break;
 
-				case RANGER:
+				case MobIndex.RANGER:
 					player.setDialogueOptions(new DialogueOptions() {
 						@Override
 						public void handleOption1(Player player) {
@@ -116,7 +117,7 @@ public class NPCOptionPacketListener implements PacketListener {
 					DialogueManager.start(player, 7);
 					break;
 
-				case EMBLEM_TRADER:
+				case MobIndex.EMBLEM_TRADER:
 
 					// Set dialogue options
 					player.setDialogueOptions(new DialogueOptions() {
@@ -182,26 +183,26 @@ public class NPCOptionPacketListener implements PacketListener {
 			public void execute() {
 				switch (npc.getId()) {
 
-				case MAGE:
+				case MobIndex.MAGE:
 					Shop.open(player, 2);
 					break;
 
-				case RANGER:
+				case MobIndex.RANGER:
 					Shop.open(player, 4);
 					break;
 
-				case WARRIOR:
+				case MobIndex.WARRIOR:
 					Shop.open(player, 5);
 					break;
 
-				case SURGEON_GENERAL_TIFANI:
+				case MobIndex.SURGEON_GENERAL_TIFANI:
 					player.getSkillManager().setCurrentLevel(Skill.HITPOINTS,
 							player.getSkillManager().getMaxLevel(Skill.HITPOINTS));
 					player.getPacketSender().sendMessage("You've been healed by the surgeon.");
 					player.getPacketSender().sendInterfaceRemoval();
 					break;
 
-				case EMBLEM_TRADER:
+				case MobIndex.EMBLEM_TRADER:
 
 					break;
 
@@ -228,19 +229,19 @@ public class NPCOptionPacketListener implements PacketListener {
 			public void execute() {
 				switch (npc.getId()) {
 
-				case MAGE:
+				case MobIndex.MAGE:
 					Shop.open(player, 1);
 					break;
 
-				case RANGER:
+				case MobIndex.RANGER:
 					Shop.open(player, 3);
 					break;
 
-				case WARRIOR:
+				case MobIndex.WARRIOR:
 					Shop.open(player, 6);
 					break;
 
-				case EMBLEM_TRADER:
+				case MobIndex.EMBLEM_TRADER:
 					if (!BountyHunter.exchangeEmblems(player)) {
 						DialogueManager.start(player, 5);
 					} else {
@@ -269,7 +270,7 @@ public class NPCOptionPacketListener implements PacketListener {
 			@Override
 			public void execute() {
 				switch (npc.getId()) {
-				case EMBLEM_TRADER:
+				case MobIndex.EMBLEM_TRADER:
 					if (player.getSkullTimer() > 0) {
 						DialogueManager.start(player, 3);
 					} else {
@@ -370,15 +371,4 @@ public class NPCOptionPacketListener implements PacketListener {
 			break;
 		}
 	}
-
-	/** NPCS **/
-	private static final int EMBLEM_TRADER = 315;
-	private static final int WARRIOR = 1158;
-	private static final int RANGER = 1576;
-	private static final int MAGE = 3309;
-	private static final int MAKE_OVER_MAGE = 1306;
-	private static final int SHOP_KEEPER = 506;
-	private static final int JEWELRY_TRADER = 526;
-	private static final int SURGEON_GENERAL_TIFANI = 3343;
-	private static final int PKER = 2660;
 }

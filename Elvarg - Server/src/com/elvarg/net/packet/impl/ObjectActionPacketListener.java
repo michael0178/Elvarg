@@ -13,6 +13,7 @@ import com.elvarg.world.content.CrystalChest;
 import com.elvarg.world.entity.combat.magic.Autocasting;
 import com.elvarg.world.entity.impl.object.GameObject;
 import com.elvarg.world.entity.impl.player.Player;
+import com.elvarg.world.index.ObjectIndex;
 import com.elvarg.world.model.Animation;
 import com.elvarg.world.model.ForceMovement;
 import com.elvarg.world.model.Item;
@@ -66,7 +67,7 @@ public class ObjectActionPacketListener implements PacketListener {
 				}
 				AreaHandler.firstClickObject(player, id);
 				switch (id) {
-				case WILDERNESS_DITCH:
+				case ObjectIndex.WILDERNESS_DITCH:
 					player.getMovementQueue().reset();
 					if (player.getForceMovement() == null) {
 						final Position crossDitch = new Position(0, player.getPosition().getY() < 3522 ? 3 : -3);
@@ -75,14 +76,14 @@ public class ObjectActionPacketListener implements PacketListener {
 										crossDitch, 0, 70, crossDitch.getY() == 3 ? 0 : 2, 6132)));
 					}
 					break;
-				case 172:
+				case ObjectIndex.CRYSTAL_CHEST:
 					CrystalChest.onClick(player);
 					break;
-				case LUNAR_ALTAR:
-				case ANCIENT_ALTAR:
+				case ObjectIndex.LUNAR_ALTAR:
+				case ObjectIndex.ANCIENT_ALTAR:
 
 					MagicSpellbook toChange = MagicSpellbook.ANCIENT;
-					if (id == LUNAR_ALTAR) {
+					if (id == ObjectIndex.LUNAR_ALTAR) {
 						toChange = MagicSpellbook.LUNAR;
 					}
 
@@ -97,7 +98,7 @@ public class ObjectActionPacketListener implements PacketListener {
 							player.getSpellbook().getInterfaceId());
 					break;
 
-				case PRAYER_ALTAR:
+				case ObjectIndex.PRAYER_ALTAR:
 					if (player.getSkillManager().getCurrentLevel(Skill.PRAYER) < player.getSkillManager()
 							.getMaxLevel(Skill.PRAYER)) {
 						player.performAnimation(new Animation(645));
@@ -143,7 +144,7 @@ public class ObjectActionPacketListener implements PacketListener {
 			@Override
 			public void execute() {
 				switch (id) {
-				case EDGEVILLE_BANK:
+				case ObjectIndex.EDGEVILLE_BANK:
 					player.getBank(player.getCurrentBankTab()).open();
 					break;
 				}
@@ -162,6 +163,7 @@ public class ObjectActionPacketListener implements PacketListener {
 	private static void fifthClick(final Player player, Packet packet) {
 
 	}
+	@SuppressWarnings("unused")
 	private void itemOnObject(final Player player, Packet packet) {
 		int interfaceId = packet.readShort();
 		int id = packet.readUnsignedShort();
@@ -240,10 +242,4 @@ public class ObjectActionPacketListener implements PacketListener {
 			break;
 		}
 	}
-
-	private static final int ANCIENT_ALTAR = 6552;
-	private static final int LUNAR_ALTAR = 14911;
-	private static final int PRAYER_ALTAR = 409;
-	private static final int EDGEVILLE_BANK = 6943;
-	private static final int WILDERNESS_DITCH = 23271;
 }
