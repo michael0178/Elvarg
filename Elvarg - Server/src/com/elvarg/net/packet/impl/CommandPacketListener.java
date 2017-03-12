@@ -46,16 +46,12 @@ public class CommandPacketListener implements PacketListener {
 			return;
 		}
 		try {
-			/*
-			 * switch (player.getRights()) {
-			 * 
-			 * }
-			 */
-			if (parts[0].equalsIgnoreCase("lockxp")) {
+			switch (parts[0]){
+			case "lockxp":
 				player.setExperienceLocked(!player.experienceLocked());
 				player.getPacketSender().sendMessage("Lock: " + player.experienceLocked());
-			}
-			if (parts[0].equalsIgnoreCase("unlock")) {
+				return;
+			case "unlock":
 				int type = Integer.parseInt(parts[1]);
 				if (type == 0) {
 					player.setPreserveUnlocked(true);
@@ -67,141 +63,152 @@ public class CommandPacketListener implements PacketListener {
 				player.getPacketSender().sendConfig(709, player.isPreserveUnlocked() ? 1 : 0);
 				player.getPacketSender().sendConfig(711, player.isRigourUnlocked() ? 1 : 0);
 				player.getPacketSender().sendConfig(713, player.isAuguryUnlocked() ? 1 : 0);
-			}
-			if (parts[0].equalsIgnoreCase("bank")) {
+				return;
+			case "bank":
+			case "b":
 				player.getBank(player.getCurrentBankTab()).open();
-			}
-			if (parts[0].equalsIgnoreCase("tt")) {
-				for (int i = 0; i < 100; i++) {
-					World.getPlayers().add(player);
-				}
-			}
-			if (parts[0].equalsIgnoreCase("setlevel")) {
-				Skill skill = Skill.values()[Integer.parseInt(parts[1])];
-				int level = Integer.parseInt(parts[2]);
-				player.getSkillManager().setCurrentLevel(skill, level).setMaxLevel(skill, level).setExperience(skill,
-						SkillManager.getExperienceForLevel(level));
-				WeaponInterfaces.assign(player);
-			}
-			if (parts[0].equalsIgnoreCase("master")) {
-				for (Skill skill : Skill.values()) {
-					int level = SkillManager.getMaxAchievingLevel(skill);
-					player.getSkillManager().setCurrentLevel(skill, level).setMaxLevel(skill, level)
-							.setExperience(skill, SkillManager.getExperienceForLevel(level));
-				}
-				WeaponInterfaces.assign(player);
-			}
-			if (parts[0].equalsIgnoreCase("playnpc")) {
-				player.setNpcTransformationId(Integer.parseInt(parts[1]));
-				player.getUpdateFlag().flag(Flag.APPEARANCE);
-			}
-			if (parts[0].equalsIgnoreCase("shopinv")) {
-				int amt = 0;
-				for (Item item : ShopDefinition.getShops().get(Integer.parseInt(parts[1])).getDefinition()
-						.getOriginalStock()) {
-					player.getInventory().add(item.getId(), item.getDefinition().isStackable() ? item.getAmount() : 1);
-					amt++;
-				}
-				player.getPacketSender().sendMessage("Added " + amt + ", to your inventory.");
-			}
-			if (parts[0].equalsIgnoreCase("npc")) {
-				World.getNpcAddQueue().add(new NPC(Integer.parseInt(parts[1]), player.getPosition().copy().add(1, 0)));
-			}
-			if (parts[0].equalsIgnoreCase("reloadnpcs")) {
-				World.getNpcs().clear();
-				TaskManager.submit(new Task(3) {
-					@Override
-					protected void execute() {
-						NpcDefinition.init();
-						stop();
+				return;
+			case "tt":
+					for (int i = 0; i < 100; i++) {
+						World.getPlayers().add(player);
 					}
-				});
-			}
-			if (parts[0].equalsIgnoreCase("save")) {
-				player.save();
-			}
-			if (parts[0].equalsIgnoreCase("pos")) {
-				player.getPacketSender().sendMessage(player.getPosition().toString());
-			}
-			if (parts[0].equalsIgnoreCase("config")) {
-				player.getPacketSender().sendConfig(Integer.parseInt(parts[1]), Integer.parseInt(parts[2]));
-			}
-			if (parts[0].equalsIgnoreCase("object")) {
-				player.getPacketSender()
-						.sendObject(new GameObject(Integer.parseInt(parts[1]), player.getPosition().copy()));
-			}
-			if (parts[0].equalsIgnoreCase("spec")) {
-				player.setSpecialPercentage(100);
-				CombatSpecial.updateBar(player);
-			}
-			if (parts[0].equalsIgnoreCase("runes")) {
-				int[] runes = new int[] { 554, 555, 556, 557, 558, 559, 560, 561, 562, 563, 564, 565 };
-				for (int rune : runes) {
-					player.getInventory().add(rune, 1000);
-				}
-			}
-			if (parts[0].equalsIgnoreCase("tele")) {
-				int x = Integer.parseInt(parts[1]);
-				int y = Integer.parseInt(parts[2]);
-				int z = 0;
-				if (parts.length == 4) {
-					z = Integer.parseInt(parts[3]);
-				}
-				player.moveTo(new Position(x, y, z));
-			}
-			if (parts[0].equalsIgnoreCase("anim")) {
-				int anim = Integer.parseInt(parts[1]);
-				player.performAnimation(new Animation(anim));
-			}
-			if (parts[0].equalsIgnoreCase("gfx")) {
-				int gfx = Integer.parseInt(parts[1]);
-				player.performGraphic(new Graphic(gfx));
-			}
-			if (parts[0].equalsIgnoreCase("item")) {
-				int amount = 1;
-				if (parts.length > 2) {
-					amount = Integer.parseInt(parts[2]);
-				}
-				player.getInventory().add(new Item(Integer.parseInt(parts[1]), amount));
-			}
-			if (parts[0].equalsIgnoreCase("int")) {
-				player.getPacketSender().sendInterface(Integer.parseInt(parts[1]));
-			}
-			if (parts[0].equalsIgnoreCase("exp")) {
-				Skill skill = Skill.forId(Integer.parseInt(parts[1]));
-				player.getSkillManager().addExperience(skill, 5000);
-			}
-			if (parts[0].equalsIgnoreCase("fill")) {
-				int bankIndex = 0;
-				for (ItemDefinition def : ItemDefinition.getDefinitions()) {
-					if (def == null) {
-						continue;
+				return;
+			case "setlevel":
+					Skill skill = Skill.values()[Integer.parseInt(parts[1])];
+					int level = Integer.parseInt(parts[2]);
+					player.getSkillManager().setCurrentLevel(skill, level).setMaxLevel(skill, level).setExperience(skill,
+							SkillManager.getExperienceForLevel(level));
+					WeaponInterfaces.assign(player);
+				return;
+			case "master":
+					for (Skill skill1 : Skill.values()) {
+						int level1 = SkillManager.getMaxAchievingLevel(skill1);
+						player.getSkillManager().setCurrentLevel(skill1, level1).setMaxLevel(skill1, level1)
+								.setExperience(skill1, SkillManager.getExperienceForLevel(level1));
 					}
-					if (def.isStackable() || def.isNoted()) {
-						continue;
+					WeaponInterfaces.assign(player);
+				return;
+			case "playnpc":
+					player.setNpcTransformationId(Integer.parseInt(parts[1]));
+					player.getUpdateFlag().flag(Flag.APPEARANCE);
+				return;
+			case "shopinv":
+					int amt = 0;
+					for (Item item : ShopDefinition.getShops().get(Integer.parseInt(parts[1])).getDefinition()
+							.getOriginalStock()) {
+						player.getInventory().add(item.getId(), item.getDefinition().isStackable() ? item.getAmount() : 1);
+						amt++;
 					}
-					if (def.getValue() <= 0) {
-						continue;
+					player.getPacketSender().sendMessage("Added " + amt + ", to your inventory.");
+				return;
+			case "npc":
+					World.getNpcAddQueue().add(new NPC(Integer.parseInt(parts[1]), player.getPosition().copy().add(1, 0)));
+				return;
+			case "reloadnpcs":
+					World.getNpcs().clear();
+					TaskManager.submit(new Task(3) {
+						@Override
+						protected void execute() {
+							NpcDefinition.init();
+							stop();
+						}
+					});
+				return;
+			case "save":
+					player.save();
+				return;
+			case "pos":
+					player.getPacketSender().sendMessage(player.getPosition().toString());
+				return;
+			case "config":
+					player.getPacketSender().sendConfig(Integer.parseInt(parts[1]), Integer.parseInt(parts[2]));
+				return;
+			case "object":
+					player.getPacketSender()
+							.sendObject(new GameObject(Integer.parseInt(parts[1]), player.getPosition().copy()));
+				return;
+				
+			case "spec":
+					player.setSpecialPercentage(100);
+					CombatSpecial.updateBar(player);
+				return;
+			case "runes":
+					int[] runes = new int[] { 554, 555, 556, 557, 558, 559, 560, 561, 562, 563, 564, 565 };
+					for (int rune : runes) {
+						player.getInventory().add(rune, 1000);
+					}
+				return;
+			case "tele":
+					int x = Integer.parseInt(parts[1]);
+					int y = Integer.parseInt(parts[2]);
+					int z = 0;
+					if (parts.length == 4) {
+						z = Integer.parseInt(parts[3]);
+					}
+					player.moveTo(new Position(x, y, z));
+				return;
+			case "anim":
+					int anim = Integer.parseInt(parts[1]);
+					player.performAnimation(new Animation(anim));
+				return;
+			case "gfx":
+					int gfx = Integer.parseInt(parts[1]);
+					player.performGraphic(new Graphic(gfx));
+				return;
+			case "item":
+					int amount = 1;
+					if (parts.length > 2) {
+						amount = Integer.parseInt(parts[2]);
+					}
+					player.getInventory().add(new Item(Integer.parseInt(parts[1]), amount));
+				return;
+			case "int":
+					player.getPacketSender().sendInterface(Integer.parseInt(parts[1]));
+				return;
+			case "exp":
+					Skill skill1 = Skill.forId(Integer.parseInt(parts[1]));
+					player.getSkillManager().addExperience(skill1, 5000);
+				return;
+			case "fill":
+					int bankIndex = 0;
+					for (ItemDefinition def : ItemDefinition.getDefinitions()) {
+						if (def == null) {
+							continue;
+						}
+						if (def.isStackable() || def.isNoted()) {
+							continue;
+						}
+						if (def.getValue() <= 0) {
+							continue;
+						}
+
+						if (player.getBank(bankIndex).getFreeSlots() == 0) {
+							bankIndex++;
+						}
+
+						if (bankIndex == 12) {
+							break;
+						}
+
+						player.getBank(bankIndex).add(new Item(def.getId(), 1), false);
 					}
 
-					if (player.getBank(bankIndex).getFreeSlots() == 0) {
-						bankIndex++;
-					}
-
-					if (bankIndex == 12) {
-						break;
-					}
-
-					player.getBank(bankIndex).add(new Item(def.getId(), 1), false);
-				}
-
+				return;
+			case "empty":
+					player.getInventory().resetItems().refreshItems();
+				return;
+			case "poison":
+					CombatFactory.poisonEntity(player, PoisonType.MILD);
+				return;
 			}
-			if (parts[0].equalsIgnoreCase("empty")) {
-				player.getInventory().resetItems().refreshItems();
-			}
-			if (parts[0].equalsIgnoreCase("poison")) {
-				CombatFactory.poisonEntity(player, PoisonType.MILD);
-			}
+		
+			/*
+			 * switch (player.getRights()) {
+			 * 
+			 * }
+			 */
+
+			
 		} catch (Exception exception) {
 			exception.printStackTrace();
 
